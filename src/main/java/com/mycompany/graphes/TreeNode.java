@@ -5,24 +5,26 @@ import java.util.List;
 
 public class TreeNode<T> implements Node<T> {
 
+    enum TypeOfNode {LEAF, BRANCH, ROOT}
+
     private T val;
-    private String type;
+    private TypeOfNode typeOfNode;
     private List<TreeNode<T>> children;
 
-    TreeNode(T val, String type, TreeNode<T>... children) {
+    TreeNode(T val, TypeOfNode type, TreeNode<T>... children) {
         this.val = val;
         if (children != null) {
             this.children = Arrays.asList(children);
         }
-        this.type = type;
+        this.typeOfNode = type;
     }
 
-    public String getType() {
-        return type;
+    public TypeOfNode getType() {
+        return typeOfNode;
     }
 
     public void print() {
-        System.out.println("Type: " + type + ", value: " + val);
+        System.out.println("Type: " + typeOfNode + ", value: " + val);
     }
 
     public List<TreeNode<T>> getChildren() {
@@ -33,8 +35,8 @@ public class TreeNode<T> implements Node<T> {
         this.children = Arrays.asList(children);
     }
 
-    void setType(String type) {
-        this.type = type;
+    void setType(TypeOfNode type) {
+        this.typeOfNode = type;
     }
 
     public T getValue() {

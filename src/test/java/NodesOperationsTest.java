@@ -28,6 +28,6 @@ public class NodesOperationsTest {
 
         int check = tree.getRoot().getChildren().size()+tree.getRoot().getChildren().get(2).getChildren().size()+1;
 
-       assertEquals(5,5);
+       assertEquals(5,check);
     }
 }

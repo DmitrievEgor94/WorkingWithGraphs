@@ -1,4 +1,9 @@
-package com.mycompany.graphes;
+package com.mycompany.graphes.Client;
+
+import com.mycompany.graphes.Client.Visitor;
+import com.mycompany.graphes.Node;
+import com.mycompany.graphes.Tree;
+import com.mycompany.graphes.TreeNode;
 
 public class PrintElements<T> implements Visitor<T> {
     @Override

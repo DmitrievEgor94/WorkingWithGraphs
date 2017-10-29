@@ -1,28 +1,39 @@
 package com.mycompany.graphes;
 
+import com.mycompany.graphes.Client.Visitor;
+import com.mycompany.graphes.Iterators.DepthIteratorStrategy;
+import com.mycompany.graphes.Iterators.IteratorStrategy;
+import com.mycompany.graphes.Iterators.TreeIteratorStrategy;
+import com.mycompany.graphes.Iterators.WrongIteratorStrategyException;
+
 import java.util.Iterator;
 import java.util.function.Consumer;
 
+import static com.mycompany.graphes.TreeNode.TypeOfNode;
+
 public class Tree<T> implements Graph<T> {
-    @Override
-    public void accept(Visitor<T> v) {
-        v.visit(this);
-    }
 
     private TreeNode<T> root;
     private TreeIteratorStrategy<T> treeIteratorStrategy;
 
     public Tree(T root) {
-        this.root = new TreeNode<>(root, "root", null);
-        this.treeIteratorStrategy = new DepthIteratorTree<>();
-        this.treeIteratorStrategy.setRoot(this.root);
+        this.root = new TreeNode<>(root, TypeOfNode.ROOT, null);
+        this.treeIteratorStrategy = new DepthIteratorStrategy<>();
+    }
+
+    @Override
+    public void accept(Visitor<T> v) {
+        v.visit(this);
     }
 
     @Override
     public Node<T> findNode(T val) {
         for (Node<T> tNode : this) {
-            if (tNode.getValue().equals(val))
-                return tNode;
+            if (tNode.getValue() != null) {
+                if (tNode.getValue().equals(val)) {
+                    return tNode;
+                }
+            }
         }
         return null;
     }
@@ -54,7 +65,6 @@ public class Tree<T> implements Graph<T> {
     public void setIteratorStrategy(IteratorStrategy<T> iteratorStrategy) throws WrongIteratorStrategyException {
         if (iteratorStrategy instanceof TreeIteratorStrategy) {
             treeIteratorStrategy = (TreeIteratorStrategy) iteratorStrategy;
-            treeIteratorStrategy.setRoot(this.root);
         } else {
             throw new WrongIteratorStrategyException("There is no instance of TreeIteratorStrategy!");
         }
@@ -64,17 +74,17 @@ public class Tree<T> implements Graph<T> {
         TreeNode<T> children[] = new TreeNode[puttedElements.length];
 
         for (int i = 0; i < children.length; i++) {
-            children[i] = new TreeNode<>(puttedElements[i], "leaf", null);
+            children[i] = new TreeNode<>(puttedElements[i], TypeOfNode.LEAF, null);
         }
 
         currentNode.setChildren(children);
         if (currentNode != root)
-            currentNode.setType("branch");
+            currentNode.setType(TypeOfNode.BRANCH);
     }
 
     @Override
     public Iterator<Node<T>> iterator() {
-        return treeIteratorStrategy.getIterator();
+        return treeIteratorStrategy.getIterator(this.root);
     }
 
 
